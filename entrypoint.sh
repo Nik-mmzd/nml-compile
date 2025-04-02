@@ -1,6 +1,7 @@
 #!/bin/bash
 # exit on error
 set -e
+[ ! -d "build" ] && mkdir build
 
 # Default config
 NML_BASENAME=${INPUT_NML_BASENAME:-newgrf}
@@ -9,8 +10,8 @@ MIN_COMPATIBLE_REVISION=${INPUT_MIN_COMPATIBLE_REVISION:-1}
 GRF_REVISION=${INPUT_GRF_VERSION:-1}
 GRF_TITLE=${INPUT_GRF_TITLE:-NewGRF}
 ####
-CUSTOM_TAGS_FILE='custom-tags.txt'
 NML_BASENAME_BASE=$(basename "$NML_BASENAME")
+CUSTOM_TAGS_FILE="build/${NML_BASENAME_BASE}_tags.txt"
 
 # create tags
 echo "VERSION: $GRF_REVISION" > "$CUSTOM_TAGS_FILE"
@@ -28,8 +29,8 @@ gcc -D REPO_REVISION="$GRF_REVISION" \
 # change.pl
 sed -i 's/) {/)\n{/g; s/} switch/}\nswitch/g; s/; /;\n/g' "${NML_BASENAME}.nml"
 # nmlc
-[ ! -d "build" ] && mkdir build
 nmlc \
+    --custom-tags="build/${NML_BASENAME_BASE}_tags.txt" \
     --grf="build/${NML_BASENAME_BASE}.grf" \
     -c \
     --nfo="build/${NML_BASENAME_BASE}.nfo" \
