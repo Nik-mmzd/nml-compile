@@ -1,0 +1,28 @@
+name: 'GRF Compile'
+description: 'Compile NewGRF using nmlc'
+inputs:
+  nml_basename:
+    description: 'PNML filename to compile, without extension'
+    default: 'newgrf'
+    required: true
+  min_compatible_revision:
+    description: 'Minimal compatible revision for this NewGRF'
+    default: '1'
+    required: true
+  grf_revision:
+    description: 'Current NewGRF revision'
+    default: '1'
+    required: true
+  grf_title:
+    description: 'NewGRF title (TITLE field of custom_tags.txt)'
+    default: 'NewGRF'
+    required: true
+
+outputs:
+  time: # id of output
+    description: 'The time we greeted you'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+
